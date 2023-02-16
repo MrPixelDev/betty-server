@@ -13,8 +13,8 @@ export class AuthController {
 
   @Post("/login")
   async login(@Body() userDto: UserDto, @Res() response: Response) {
+    const res = await this.authService.login(userDto);
     try {
-      const res = await this.authService.login(userDto);
       const cookieOptions = {
         maxAge: Number(process.env.REFRESH_KEY_AGE_S) * 1000,
         httpOnly: true,
@@ -24,7 +24,7 @@ export class AuthController {
       // return res;
     } catch (e) {
       console.log(e.message);
-      return e;
+      response.send(e);
     }
   }
 
@@ -48,7 +48,7 @@ export class AuthController {
       // return res;
     } catch (e) {
       console.log(e.message);
-      return e;
+      response.send(e);
     }
   }
 }

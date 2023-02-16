@@ -24,8 +24,8 @@ let AuthController = class AuthController {
         this.authService = authService;
     }
     async login(userDto, response) {
+        const res = await this.authService.login(userDto);
         try {
-            const res = await this.authService.login(userDto);
             const cookieOptions = {
                 maxAge: Number(process.env.REFRESH_KEY_AGE_S) * 1000,
                 httpOnly: true,
@@ -35,7 +35,7 @@ let AuthController = class AuthController {
         }
         catch (e) {
             console.log(e.message);
-            return e;
+            response.send(e);
         }
     }
     async refreshToken(refreshToken, response) {
@@ -53,7 +53,7 @@ let AuthController = class AuthController {
         }
         catch (e) {
             console.log(e.message);
-            return e;
+            response.send(e);
         }
     }
 };
