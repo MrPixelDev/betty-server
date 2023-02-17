@@ -4,6 +4,7 @@ import { SequelizeModule } from "@nestjs/sequelize";
 import { User, Token } from "./users/users.model";
 import { UsersModule } from "./users/users.module";
 import { AuthModule } from "./auth/auth.module";
+import { ApiModule } from "./api/api.module";
 
 @Module({
   controllers: [],
@@ -25,6 +26,7 @@ import { AuthModule } from "./auth/auth.module";
     }),
     UsersModule,
     AuthModule,
+    ApiModule,
   ],
 })
 export class AppModule {}

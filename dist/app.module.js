@@ -13,6 +13,7 @@ const sequelize_1 = require("@nestjs/sequelize");
 const users_model_1 = require("./users/users.model");
 const users_module_1 = require("./users/users.module");
 const auth_module_1 = require("./auth/auth.module");
+const api_module_1 = require("./api/api.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -36,6 +37,7 @@ AppModule = __decorate([
             }),
             users_module_1.UsersModule,
             auth_module_1.AuthModule,
+            api_module_1.ApiModule,
         ],
     })
 ], AppModule);

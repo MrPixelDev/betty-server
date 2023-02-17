@@ -18,6 +18,7 @@ export class AuthController {
       const cookieOptions = {
         maxAge: Number(process.env.REFRESH_KEY_AGE_S) * 1000,
         httpOnly: true,
+        secure: Boolean(process.env.HTTPS_COOKIE),
       };
       response.cookie("refreshToken", res.refreshToken, cookieOptions);
       response.send(new TokensDto(res));
@@ -34,14 +35,15 @@ export class AuthController {
     @Cookies("refreshToken") refreshToken: any,
     @Res() response: Response
   ) {
+    const res = await this.authService.refreshToken(refreshToken);
+    if (!refreshToken) {
+      throw new Error("No active sessions.");
+    }
     try {
-      if (!refreshToken) {
-        throw new Error("No active sessions.");
-      }
-      const res = await this.authService.refreshToken(refreshToken);
       const cookieOptions = {
         maxAge: Number(process.env.REFRESH_KEY_AGE_S) * 1000,
         httpOnly: true,
+        secure: Boolean(process.env.HTTPS_COOKIE),
       };
       response.cookie("refreshToken", res.refreshToken, cookieOptions);
       response.send(new TokensDto(res));

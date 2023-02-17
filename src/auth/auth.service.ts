@@ -1,10 +1,11 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { UserDto } from "src/users/dto/user.dto";
+import { ICipher, UserDto } from "src/users/dto/user.dto";
 import { UsersService } from "src/users/users.service";
 import * as bcrypt from "bcryptjs";
 import { User } from "src/users/users.model";
 import { ITokens } from "src/users/dto/tokens.dto";
+import { createDecipheriv } from "crypto";
 
 @Injectable()
 export class AuthService {
@@ -41,9 +42,22 @@ export class AuthService {
     };
   }
 
+  // private async decrypt(cipherObject: ICipher) {
+  //   const key = new TextEncoder().encode(process.env.ENCRYPT_KEY);
+  //   const decipher = createDecipheriv("aes-256-gcm", key, cipherObject.iv);
+  //   const decoded = Buffer.concat([decipher.update(cipherObject.cipherText), decipher.final()])
+  // }
+
   private async validateUser(userDto: UserDto) {
     const user = await this.usersService.getUserByUsername(userDto.username);
     if (user) {
+      // const password = await bcrypt.hash(userDto.password, 5);
+      console.log("-----------------------------");
+      console.log(userDto.password);
+      // console.log(password);
+      console.log(user.password);
+      console.log("-----------------------------");
+      // const password = await bcrypt.hash(userDto.password, 5);
       const passwordEquals = await bcrypt.compare(
         userDto.password,
         user.password
