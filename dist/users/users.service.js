@@ -33,10 +33,11 @@ let UsersService = class UsersService {
         return await this.userRepository.create(dto);
     }
     async addRefreshToken({ refreshToken, user }) {
+        this.removeExpiredTokens();
         const isoString = new Date(this.jwtService.decode(refreshToken)["exp"] * 1000).toISOString();
         const expiresAt = new Date(isoString);
         return await this.tokenRepository.create({
-            userId: user.id,
+            userId: user.userId,
             refreshToken,
             expiresAt,
         });
@@ -76,10 +77,11 @@ let UsersService = class UsersService {
         return user;
     }
     async removeExpiredTokens() {
+        console.log("--------------------------------------");
         await this.tokenRepository.destroy({
             where: {
-                expiresAt: {
-                    [sequelize_2.Op.lt]: sequelize_typescript_1.Sequelize.literal("NOW()"),
+                createdAt: {
+                    [sequelize_2.Op.lt]: sequelize_typescript_1.Sequelize.literal(`NOW() - INTERVAL '${process.env.REFRESH_KEY_AGE_S} SECONDS'`),
                 },
             },
         });

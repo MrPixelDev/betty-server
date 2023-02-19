@@ -20,7 +20,7 @@ let AuthService = class AuthService {
         this.jwtService = jwtService;
     }
     async generateTokenPair(user) {
-        const payload = { username: user.username, id: user.id };
+        const payload = { username: user.username, userId: user.userId };
         const [accessToken, refreshToken] = await Promise.all([
             this.jwtService.signAsync(payload, {
                 secret: process.env.PRIVATE_KEY || "SECRET",
@@ -44,10 +44,6 @@ let AuthService = class AuthService {
     async validateUser(userDto) {
         const user = await this.usersService.getUserByUsername(userDto.username);
         if (user) {
-            console.log("-----------------------------");
-            console.log(userDto.password);
-            console.log(user.password);
-            console.log("-----------------------------");
             const passwordEquals = await bcrypt.compare(userDto.password, user.password);
             if (passwordEquals) {
                 return user;

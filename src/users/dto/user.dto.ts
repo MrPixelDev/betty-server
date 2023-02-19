@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { SiteEnum } from "src/api/enum/sites.enum";
 
 export interface ICipher {
   cipherText: ArrayBuffer;
@@ -10,4 +11,11 @@ export class UserDto {
   readonly username: string;
   @ApiProperty({ example: "*****", description: "Password" })
   readonly password: string;
+}
+
+export class UserApiDto {
+  readonly userId: number;
+  readonly username: string;
+  readonly password: string;
+  readonly site: SiteEnum;
 }

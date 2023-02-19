@@ -1,7 +1,7 @@
 import { Body, Controller, Post, Get, Res } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { Response } from "express";
-import { Cookies } from "src/decorators/Cookies.decorator";
+import { Cookies } from "src/common/decorators/Cookies.decorator";
 import { TokensDto } from "src/users/dto/tokens.dto";
 import { UserDto } from "src/users/dto/user.dto";
 import { AuthService } from "./auth.service";
@@ -11,6 +11,7 @@ import { AuthService } from "./auth.service";
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  // TODO: Body -refreshToken, -user.password, -user.createdat+...
   @Post("/login")
   async login(@Body() userDto: UserDto, @Res() response: Response) {
     const res = await this.authService.login(userDto);
@@ -29,7 +30,8 @@ export class AuthController {
     }
   }
 
-  // TODO: Secure flag for cookie
+  // TODO: Use Interceptors
+  // TODO: Body -refreshToken, -user.password, -user.createdat+...
   @Get("/refresh")
   async refreshToken(
     @Cookies("refreshToken") refreshToken: any,

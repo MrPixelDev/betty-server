@@ -10,6 +10,7 @@ exports.UsersModule = void 0;
 const common_1 = require("@nestjs/common");
 const sequelize_1 = require("@nestjs/sequelize");
 const auth_module_1 = require("../auth/auth.module");
+const worker_model_1 = require("../worker/worker.model");
 const users_controller_1 = require("./users.controller");
 const users_model_1 = require("./users.model");
 const users_service_1 = require("./users.service");
@@ -20,7 +21,7 @@ UsersModule = __decorate([
         controllers: [users_controller_1.UsersController],
         providers: [users_service_1.UsersService],
         imports: [
-            sequelize_1.SequelizeModule.forFeature([users_model_1.User, users_model_1.Token]),
+            sequelize_1.SequelizeModule.forFeature([users_model_1.User, users_model_1.Token, worker_model_1.StateCredentials, worker_model_1.State]),
             (0, common_1.forwardRef)(() => auth_module_1.AuthModule),
         ],
         exports: [users_service_1.UsersService],

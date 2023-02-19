@@ -11,12 +11,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ApiService = void 0;
 const common_1 = require("@nestjs/common");
+const users_service_1 = require("../users/users.service");
+const worker_service_1 = require("../worker/worker.service");
 let ApiService = class ApiService {
-    constructor() { }
+    constructor(usersService, workerService) {
+        this.usersService = usersService;
+        this.workerService = workerService;
+    }
+    async login(userApiDto) {
+        return this.workerService.apiCallSiteLogin(userApiDto);
+    }
+    async logout(pageDto) {
+        return this.workerService.apiCallSiteLogout(pageDto);
+    }
 };
 ApiService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [users_service_1.UsersService,
+        worker_service_1.WorkerService])
 ], ApiService);
 exports.ApiService = ApiService;
 //# sourceMappingURL=api.service.js.map

@@ -23,13 +23,15 @@ export class UsersService {
     return await this.userRepository.create(dto);
   }
 
+  // TODO: RefreshTokenDto
   async addRefreshToken({ refreshToken, user }) {
+    this.removeExpiredTokens();
     const isoString = new Date(
       this.jwtService.decode(refreshToken)["exp"] * 1000
     ).toISOString();
     const expiresAt = new Date(isoString);
     return await this.tokenRepository.create({
-      userId: user.id,
+      userId: user.userId,
       refreshToken,
       expiresAt,
     });
@@ -79,21 +81,23 @@ export class UsersService {
     return user;
   }
 
-  // TODO: envs
   async removeExpiredTokens() {
-    // await this.tokenRepository.destroy({
-    //   where: {
-    //     createdAt: {
-    //       [Op.lt]: Sequelize.literal(`NOW() - INTERVAL '30 SECONDS'`),
-    //     },
-    //   },
-    // });
+    console.log("--------------------------------------");
     await this.tokenRepository.destroy({
       where: {
-        expiresAt: {
-          [Op.lt]: Sequelize.literal("NOW()"),
+        createdAt: {
+          [Op.lt]: Sequelize.literal(
+            `NOW() - INTERVAL '${process.env.REFRESH_KEY_AGE_S} SECONDS'`
+          ),
         },
       },
     });
+    //   await this.tokenRepository.destroy({
+    //     where: {
+    //       expiresAt: {
+    //         [Op.lt]: Sequelize.literal("NOW()"),
+    //       },
+    //     },
+    //   });
   }
 }

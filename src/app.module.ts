@@ -5,6 +5,9 @@ import { User, Token } from "./users/users.model";
 import { UsersModule } from "./users/users.module";
 import { AuthModule } from "./auth/auth.module";
 import { ApiModule } from "./api/api.module";
+import { PuppetModule } from "./worker/puppet/puppet.module";
+import { WorkerModule } from "./worker/worker.module";
+import { State, StateCredentials } from "./worker/worker.model";
 
 @Module({
   controllers: [],
@@ -20,13 +23,15 @@ import { ApiModule } from "./api/api.module";
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User, Token],
+      models: [User, Token, StateCredentials, State],
       autoLoadModels: Boolean(process.env.POSTGRES_AUTO_LOAD_MODELS),
       synchronize: Boolean(process.env.POSTGRES_SYNC),
     }),
     UsersModule,
     AuthModule,
     ApiModule,
+    PuppetModule,
+    WorkerModule,
   ],
 })
 export class AppModule {}

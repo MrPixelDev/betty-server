@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { JwtAuthGuard } from "src/guards/jwt-auth.guard";
+import { JwtAuthGuard } from "src/common/guards/jwt-auth.guard";
 import { UserDto } from "./dto/user.dto";
 import { User } from "./users.model";
 import { UsersService } from "./users.service";
@@ -10,6 +10,7 @@ import { UsersService } from "./users.service";
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
+  // TODO: Body -refreshToken, -user.password, -user.createdat+...
   @Post("/registration")
   registration(@Body() userDto: UserDto) {
     return this.usersService.registration(userDto);

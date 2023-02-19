@@ -27,7 +27,7 @@ let JwtAuthGuard = class JwtAuthGuard {
             const user = this.jwtService.verify(token, {
                 secret: `${process.env.PRIVATE_KEY}` || "SECRET",
             });
-            if (user.username && user.id) {
+            if (user.username && user.userId) {
                 req.user = user;
                 return true;
             }

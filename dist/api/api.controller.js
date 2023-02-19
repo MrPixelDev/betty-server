@@ -8,17 +8,45 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ApiController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
+const user_dto_1 = require("../users/dto/user.dto");
+const api_service_1 = require("./api.service");
+const api_dto_1 = require("./dto/api.dto");
 let ApiController = class ApiController {
-    constructor() { }
+    constructor(apiService) {
+        this.apiService = apiService;
+    }
+    async login(userApiDto) {
+        return await this.apiService.login(userApiDto);
+    }
+    async logout(pageDto) {
+        return await this.apiService.logout(pageDto);
+    }
 };
+__decorate([
+    (0, common_1.Post)("/login"),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_dto_1.UserApiDto]),
+    __metadata("design:returntype", Promise)
+], ApiController.prototype, "login", null);
+__decorate([
+    (0, common_1.Post)("logout"),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [api_dto_1.PageDto]),
+    __metadata("design:returntype", Promise)
+], ApiController.prototype, "logout", null);
 ApiController = __decorate([
     (0, swagger_1.ApiTags)("Api"),
     (0, common_1.Controller)("api"),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [api_service_1.ApiService])
 ], ApiController);
 exports.ApiController = ApiController;
 //# sourceMappingURL=api.controller.js.map

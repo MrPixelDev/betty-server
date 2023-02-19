@@ -8,6 +8,7 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
+import { StateCredentials } from "src/worker/worker.model";
 
 interface UserCreationAttrs {
   username: string;
@@ -23,7 +24,7 @@ export class User extends Model<User, UserCreationAttrs> {
     autoIncrement: true,
     primaryKey: true,
   })
-  id: number;
+  userId: number;
 
   @ApiProperty({ example: "123@mail.ru", description: "Email" })
   @Column({
@@ -55,6 +56,9 @@ export class User extends Model<User, UserCreationAttrs> {
 
   @HasMany(() => Token)
   refreshTokens: Token[];
+
+  @HasMany(() => StateCredentials)
+  stateCredentials: StateCredentials[];
 }
 
 @Table({ tableName: "tokens" })
@@ -91,10 +95,6 @@ export class Token extends Model<Token> {
   refreshToken: string;
 
   @ApiProperty({ example: "false", description: "true/false" })
-  // @Column({
-  //   type: DataType.DATE,
-  // })
-  // expiresAt: Date;
   @Column({
     type: DataType.DATE,
   })

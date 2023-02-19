@@ -15,7 +15,7 @@ export class AuthService {
   ) {}
 
   private async generateTokenPair(user: User): Promise<ITokens> {
-    const payload = { username: user.username, id: user.id };
+    const payload = { username: user.username, userId: user.userId };
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(payload, {
         secret: process.env.PRIVATE_KEY || "SECRET",
@@ -52,11 +52,6 @@ export class AuthService {
     const user = await this.usersService.getUserByUsername(userDto.username);
     if (user) {
       // const password = await bcrypt.hash(userDto.password, 5);
-      console.log("-----------------------------");
-      console.log(userDto.password);
-      // console.log(password);
-      console.log(user.password);
-      console.log("-----------------------------");
       // const password = await bcrypt.hash(userDto.password, 5);
       const passwordEquals = await bcrypt.compare(
         userDto.password,

@@ -1,15 +1,17 @@
 import { Model } from "sequelize-typescript";
+import { StateCredentials } from "src/worker/worker.model";
 interface UserCreationAttrs {
     username: string;
     password: string;
 }
 export declare class User extends Model<User, UserCreationAttrs> {
-    id: number;
+    userId: number;
     username: string;
     password: string;
     banned: boolean;
     banReason: string;
     refreshTokens: Token[];
+    stateCredentials: StateCredentials[];
 }
 export declare class Token extends Model<Token> {
     refreshTokenId: number;
