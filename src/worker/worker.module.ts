@@ -9,7 +9,7 @@ import { WorkerService } from "./worker.service";
 @Module({
   providers: [WorkerService],
   imports: [
-    SequelizeModule.forFeature([User, Token, StateCredentials, State]),
+    SequelizeModule.forFeature([User, StateCredentials, State]),
     PuppetModule,
     UsersModule,
   ],

@@ -20,7 +20,7 @@ WorkerModule = __decorate([
     (0, common_1.Module)({
         providers: [worker_service_1.WorkerService],
         imports: [
-            sequelize_1.SequelizeModule.forFeature([users_model_1.User, users_model_1.Token, worker_model_1.StateCredentials, worker_model_1.State]),
+            sequelize_1.SequelizeModule.forFeature([users_model_1.User, worker_model_1.StateCredentials, worker_model_1.State]),
             puppet_module_1.PuppetModule,
             users_module_1.UsersModule,
         ],

@@ -21,7 +21,7 @@ UsersModule = __decorate([
         controllers: [users_controller_1.UsersController],
         providers: [users_service_1.UsersService],
         imports: [
-            sequelize_1.SequelizeModule.forFeature([users_model_1.User, users_model_1.Token, worker_model_1.StateCredentials, worker_model_1.State]),
+            sequelize_1.SequelizeModule.forFeature([users_model_1.User, users_model_1.Token, worker_model_1.StateCredentials]),
             (0, common_1.forwardRef)(() => auth_module_1.AuthModule),
         ],
         exports: [users_service_1.UsersService],

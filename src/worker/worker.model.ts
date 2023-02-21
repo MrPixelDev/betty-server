@@ -11,6 +11,52 @@ import {
 } from "sequelize-typescript";
 import { User } from "src/users/users.model";
 
+@Table({ tableName: "states" })
+export class State extends Model<State> {
+  @Column({
+    type: DataType.INTEGER,
+    unique: true,
+    autoIncrement: true,
+    primaryKey: true,
+  })
+  stateId: number;
+
+  @Column({
+    type: DataType.INTEGER,
+  })
+  status: number;
+
+  @Column({
+    type: DataType.FLOAT,
+  })
+  biBalance: number;
+
+  @Column({
+    type: DataType.FLOAT,
+  })
+  bkBalance: number;
+
+  @Column({
+    type: DataType.FLOAT,
+  })
+  betSum: number;
+
+  @Column({
+    type: DataType.INTEGER,
+  })
+  stackSize: number;
+
+  @Column({
+    type: DataType.INTEGER,
+  })
+  stackFilled: number;
+
+  @Column({
+    type: DataType.FLOAT,
+  })
+  profit: number;
+}
+
 @Table({ tableName: "stateCredentials" })
 export class StateCredentials extends Model<StateCredentials> {
   @Column({
@@ -27,7 +73,7 @@ export class StateCredentials extends Model<StateCredentials> {
   })
   userId: number;
 
-  @BelongsTo(() => User)
+  @BelongsTo(() => User, "userId")
   user: User;
 
   @Column({
@@ -60,53 +106,12 @@ export class StateCredentials extends Model<StateCredentials> {
   })
   bkPassword: string;
 
-  // @HasOne(() => State)
-  // stateId: State;
-}
-
-@Table({ tableName: "state" })
-export class State extends Model<State> {
-  @ForeignKey(() => StateCredentials)
+  @ForeignKey(() => State)
   @Column({
     type: DataType.INTEGER,
   })
   stateId: number;
 
-  @BelongsTo(() => StateCredentials)
-  stateCredentials: StateCredentials;
-
-  @Column({
-    type: DataType.STRING,
-  })
-  status: string;
-
-  @Column({
-    type: DataType.FLOAT,
-  })
-  biBalance: number;
-
-  @Column({
-    type: DataType.FLOAT,
-  })
-  bkBalance: number;
-
-  @Column({
-    type: DataType.FLOAT,
-  })
-  betSum: number;
-
-  @Column({
-    type: DataType.INTEGER,
-  })
-  stackSize: number;
-
-  @Column({
-    type: DataType.INTEGER,
-  })
-  stackFilled: number;
-
-  @Column({
-    type: DataType.FLOAT,
-  })
-  profit: number;
+  @BelongsTo(() => State, "stateId")
+  state: State;
 }

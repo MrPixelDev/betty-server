@@ -62,7 +62,7 @@ __decorate([
     __metadata("design:type", Array)
 ], User.prototype, "refreshTokens", void 0);
 __decorate([
-    (0, sequelize_typescript_1.HasMany)(() => worker_model_1.StateCredentials),
+    (0, sequelize_typescript_1.HasMany)(() => worker_model_1.StateCredentials, "userId"),
     __metadata("design:type", Array)
 ], User.prototype, "stateCredentials", void 0);
 User = __decorate([

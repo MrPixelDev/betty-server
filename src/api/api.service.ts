@@ -3,7 +3,7 @@ import { Request } from "express";
 import { UserApiDto, UserDto } from "src/users/dto/user.dto";
 import { UsersService } from "src/users/users.service";
 import { WorkerService } from "src/worker/worker.service";
-import { PageDto } from "./dto/api.dto";
+import { GetStateDto, IGetStateResponse, PageDto } from "./dto/api.dto";
 
 @Injectable()
 export class ApiService {
@@ -13,11 +13,18 @@ export class ApiService {
   ) {}
 
   async login(userApiDto: UserApiDto) {
-    return this.workerService.apiCallSiteLogin(userApiDto);
+    return await this.workerService.apiCallSiteLogin(userApiDto);
     // return this.puppetService.login(site, userDto);
   }
 
   async logout(pageDto: PageDto) {
-    return this.workerService.apiCallSiteLogout(pageDto);
+    // disconnect socket if exists
+    return await this.workerService.apiCallSiteLogout(pageDto);
+  }
+
+  async getState(getStateDto: GetStateDto): Promise<IGetStateResponse | any> {
+    // create websocket
+    const response = await this.workerService.apiCallGetState(getStateDto);
+    return response;
   }
 }

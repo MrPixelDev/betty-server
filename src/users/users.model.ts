@@ -57,7 +57,7 @@ export class User extends Model<User, UserCreationAttrs> {
   @HasMany(() => Token)
   refreshTokens: Token[];
 
-  @HasMany(() => StateCredentials)
+  @HasMany(() => StateCredentials, "userId")
   stateCredentials: StateCredentials[];
 }
 

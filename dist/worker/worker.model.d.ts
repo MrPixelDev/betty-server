@@ -1,5 +1,15 @@
 import { Model } from "sequelize-typescript";
 import { User } from "src/users/users.model";
+export declare class State extends Model<State> {
+    stateId: number;
+    status: number;
+    biBalance: number;
+    bkBalance: number;
+    betSum: number;
+    stackSize: number;
+    stackFilled: number;
+    profit: number;
+}
 export declare class StateCredentials extends Model<StateCredentials> {
     stateCredentialsId: number;
     userId: number;
@@ -10,15 +20,6 @@ export declare class StateCredentials extends Model<StateCredentials> {
     bkName: string;
     bkLogin: string;
     bkPassword: string;
-}
-export declare class State extends Model<State> {
     stateId: number;
-    stateCredentials: StateCredentials;
-    status: string;
-    biBalance: number;
-    bkBalance: number;
-    betSum: number;
-    stackSize: number;
-    stackFilled: number;
-    profit: number;
+    state: State;
 }

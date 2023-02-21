@@ -19,10 +19,14 @@ let ApiService = class ApiService {
         this.workerService = workerService;
     }
     async login(userApiDto) {
-        return this.workerService.apiCallSiteLogin(userApiDto);
+        return await this.workerService.apiCallSiteLogin(userApiDto);
     }
     async logout(pageDto) {
-        return this.workerService.apiCallSiteLogout(pageDto);
+        return await this.workerService.apiCallSiteLogout(pageDto);
+    }
+    async getState(getStateDto) {
+        const response = await this.workerService.apiCallGetState(getStateDto);
+        return response;
     }
 };
 ApiService = __decorate([

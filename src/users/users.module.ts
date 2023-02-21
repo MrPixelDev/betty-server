@@ -10,7 +10,7 @@ import { UsersService } from "./users.service";
   controllers: [UsersController],
   providers: [UsersService],
   imports: [
-    SequelizeModule.forFeature([User, Token, StateCredentials, State]),
+    SequelizeModule.forFeature([User, Token, StateCredentials]),
     forwardRef(() => AuthModule),
   ],
   exports: [UsersService],

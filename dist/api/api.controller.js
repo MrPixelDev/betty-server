@@ -28,6 +28,9 @@ let ApiController = class ApiController {
     async logout(pageDto) {
         return await this.apiService.logout(pageDto);
     }
+    async getState(getStateDto) {
+        return await this.apiService.getState(getStateDto);
+    }
 };
 __decorate([
     (0, common_1.Post)("/login"),
@@ -43,6 +46,13 @@ __decorate([
     __metadata("design:paramtypes", [api_dto_1.PageDto]),
     __metadata("design:returntype", Promise)
 ], ApiController.prototype, "logout", null);
+__decorate([
+    (0, common_1.Post)("getstate"),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [api_dto_1.GetStateDto]),
+    __metadata("design:returntype", Promise)
+], ApiController.prototype, "getState", null);
 ApiController = __decorate([
     (0, swagger_1.ApiTags)("Api"),
     (0, common_1.Controller)("api"),

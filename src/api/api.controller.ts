@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, Req, Res } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { UserApiDto } from "src/users/dto/user.dto";
 import { ApiService } from "./api.service";
-import { PageDto } from "./dto/api.dto";
+import { GetStateDto, PageDto } from "./dto/api.dto";
 
 @ApiTags("Api")
 @Controller("api")
@@ -30,6 +30,11 @@ export class ApiController {
   @Post("logout")
   async logout(@Body() pageDto: PageDto) {
     return await this.apiService.logout(pageDto);
+  }
+
+  @Post("getstate")
+  async getState(@Body() getStateDto: GetStateDto) {
+    return await this.apiService.getState(getStateDto);
   }
 
   // TODO: Secure flag for cookie
