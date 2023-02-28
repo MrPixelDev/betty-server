@@ -11,6 +11,7 @@ const common_1 = require("@nestjs/common");
 const users_module_1 = require("../../users/users.module");
 const puppet_service_1 = require("./puppet.service");
 const FTFSOObetService_1 = require("./sites/525600bet/FTFSOObetService");
+const fonbetService_1 = require("./sites/fonbet/fonbetService");
 const Si14Service_1 = require("./sites/si14/Si14Service");
 let PuppetModule = class PuppetModule {
 };
@@ -20,6 +21,7 @@ PuppetModule = __decorate([
             puppet_service_1.PuppetService,
             Si14Service_1.Si14Service,
             FTFSOObetService_1.FTFSOObetService,
+            fonbetService_1.FonbetService,
         ],
         imports: [users_module_1.UsersModule],
         exports: [puppet_service_1.PuppetService],

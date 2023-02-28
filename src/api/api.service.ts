@@ -18,13 +18,16 @@ export class ApiService {
   }
 
   async logout(pageDto: PageDto) {
-    // disconnect socket if exists
     return await this.workerService.apiCallSiteLogout(pageDto);
   }
 
   async getState(getStateDto: GetStateDto): Promise<IGetStateResponse | any> {
-    // create websocket
     const response = await this.workerService.apiCallGetState(getStateDto);
+    return response;
+  }
+
+  async parseStrategies(getStateDto: GetStateDto): Promise<any> {
+    const response = await this.workerService.apiCallGetStrategies(getStateDto);
     return response;
   }
 }

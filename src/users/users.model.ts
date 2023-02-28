@@ -8,7 +8,7 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
-import { StateCredentials } from "src/worker/worker.model";
+import { StateCredentials } from "src/worker/state/state.model";
 
 interface UserCreationAttrs {
   username: string;

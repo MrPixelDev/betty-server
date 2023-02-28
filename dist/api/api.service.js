@@ -28,6 +28,10 @@ let ApiService = class ApiService {
         const response = await this.workerService.apiCallGetState(getStateDto);
         return response;
     }
+    async parseStrategies(getStateDto) {
+        const response = await this.workerService.apiCallGetStrategies(getStateDto);
+        return response;
+    }
 };
 ApiService = __decorate([
     (0, common_1.Injectable)(),

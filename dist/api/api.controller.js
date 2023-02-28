@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ApiController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
+const RateLimitInterceptor_1 = require("../common/middlewares/RateLimitInterceptor");
 const user_dto_1 = require("../users/dto/user.dto");
 const api_service_1 = require("./api.service");
 const api_dto_1 = require("./dto/api.dto");
@@ -30,6 +31,9 @@ let ApiController = class ApiController {
     }
     async getState(getStateDto) {
         return await this.apiService.getState(getStateDto);
+    }
+    async parseStrategies(getStateDto) {
+        return await this.apiService.parseStrategies(getStateDto);
     }
 };
 __decorate([
@@ -47,12 +51,21 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ApiController.prototype, "logout", null);
 __decorate([
+    (0, common_1.UseInterceptors)(new RateLimitInterceptor_1.RateLimitInterceptor()),
     (0, common_1.Post)("getstate"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [api_dto_1.GetStateDto]),
     __metadata("design:returntype", Promise)
 ], ApiController.prototype, "getState", null);
+__decorate([
+    (0, common_1.UseInterceptors)(new RateLimitInterceptor_1.RateLimitInterceptor()),
+    (0, common_1.Post)("parsestrategies"),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [api_dto_1.GetStateDto]),
+    __metadata("design:returntype", Promise)
+], ApiController.prototype, "parseStrategies", null);
 ApiController = __decorate([
     (0, swagger_1.ApiTags)("Api"),
     (0, common_1.Controller)("api"),

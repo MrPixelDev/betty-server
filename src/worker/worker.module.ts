@@ -3,16 +3,14 @@ import { SequelizeModule } from "@nestjs/sequelize";
 import { Token, User } from "src/users/users.model";
 import { UsersModule } from "src/users/users.module";
 import { PuppetModule } from "./puppet/puppet.module";
-import { State, StateCredentials } from "./worker.model";
+import { StateModule } from "./state/state.module";
+import { StateService } from "./state/state.service";
+import { State, StateCredentials, Stock, Strategy } from "./state/state.model";
 import { WorkerService } from "./worker.service";
 
 @Module({
   providers: [WorkerService],
-  imports: [
-    SequelizeModule.forFeature([User, StateCredentials, State]),
-    PuppetModule,
-    UsersModule,
-  ],
+  imports: [PuppetModule, UsersModule, StateModule],
   exports: [WorkerService],
 })
 export class WorkerModule {}

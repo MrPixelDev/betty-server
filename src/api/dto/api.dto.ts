@@ -19,11 +19,7 @@ export class GetStateDto {
 
 export interface IGetStateResponse {
   stateId: number;
-  status: number;
   biBalance: number;
   bkBalance: number;
-  betSum: number;
-  stackSize: number;
-  stackFilled: number;
   profit: number;
 }

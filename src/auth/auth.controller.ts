@@ -1,7 +1,15 @@
-import { Body, Controller, Post, Get, Res } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Post,
+  Get,
+  Res,
+  UseInterceptors,
+} from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { Response } from "express";
 import { Cookies } from "src/common/decorators/Cookies.decorator";
+import { RateLimitInterceptor } from "src/common/middlewares/RateLimitInterceptor";
 import { TokensDto } from "src/users/dto/tokens.dto";
 import { UserDto } from "src/users/dto/user.dto";
 import { AuthService } from "./auth.service";

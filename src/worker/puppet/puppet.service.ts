@@ -1,10 +1,12 @@
 import { Injectable } from "@nestjs/common";
 import * as puppeteer from "puppeteer";
 import { Cluster } from "puppeteer-cluster";
-import { PageDto } from "src/api/dto/api.dto";
+import { GetStateDto, PageDto } from "src/api/dto/api.dto";
 import { SiteEnum } from "src/api/enum/sites.enum";
 import { UserApiDto, UserDto } from "src/users/dto/user.dto";
+import { ILeague } from "../dto/worker.dto";
 import { FTFSOObetService } from "./sites/525600bet/FTFSOObetService";
+import { FonbetService } from "./sites/fonbet/fonbetService";
 import { Si14Service } from "./sites/si14/Si14Service";
 
 export interface IPageContext {
@@ -21,7 +23,8 @@ export class PuppetService {
 
   constructor(
     private si14Service: Si14Service,
-    private ftfsooService: FTFSOObetService
+    private ftfsooService: FTFSOObetService,
+    private fonbetService: FonbetService
   ) {
     // Cluster.launch({
     //   concurrency: Cluster.CONCURRENCY_BROWSER,
@@ -47,6 +50,7 @@ export class PuppetService {
   async getNewPage(): Promise<IPageContext> {
     const context = await this.browser.createIncognitoBrowserContext();
     const page = await context.newPage();
+    // TODO: index from empty
     const index = this.pages.length;
     this.pages.push({ index, context, page });
     return { index, context, page };
@@ -64,5 +68,51 @@ export class PuppetService {
 
   async logout(pageDto: PageDto) {
     await this.pages[pageDto.pageIndex].page.close();
+  }
+
+  async parseBalances(getStateDto: GetStateDto) {
+    let biBalance: number;
+    let bkBalance: number;
+    switch (getStateDto.bi.name) {
+      case SiteEnum.SI14:
+        biBalance = await this.si14Service.parseBalance(
+          this.pages[getStateDto.bi.pageIndex]
+        );
+        break;
+    }
+    switch (getStateDto.bk.name) {
+      case SiteEnum.FTFSOOBET:
+        bkBalance = await this.ftfsooService.parseBalance(
+          this.pages[getStateDto.bk.pageIndex]
+        );
+        break;
+    }
+    return {
+      biBalance,
+      bkBalance,
+    };
+  }
+
+  async parseLeagues(sportName: string, pageIndex: number): Promise<ILeague> {
+    const parsed = await this.si14Service.parseLeagues(
+      sportName,
+      this.pages[pageIndex]
+    );
+    return parsed;
+  }
+
+  // async parseLeagueEvents(league: string, pageIndex: number) {
+  //   return await this.si14Service.parseLeagueEvents(
+  //     league,
+  //     this.pages[pageIndex]
+  //   );
+  // }
+
+  async parseBetList(leagueEvent: string) {
+    const pageContext = await this.getNewPage();
+    return await this.fonbetService.parseBetList(
+      leagueEvent,
+      this.pages[pageContext.index]
+    );
   }
 }

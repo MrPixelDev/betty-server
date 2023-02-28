@@ -1,7 +1,7 @@
 import { forwardRef, Module } from "@nestjs/common";
 import { SequelizeModule } from "@nestjs/sequelize";
 import { AuthModule } from "src/auth/auth.module";
-import { State, StateCredentials } from "src/worker/worker.model";
+import { State, StateCredentials } from "src/worker/state/state.model";
 import { UsersController } from "./users.controller";
 import { Token, User } from "./users.model";
 import { UsersService } from "./users.service";

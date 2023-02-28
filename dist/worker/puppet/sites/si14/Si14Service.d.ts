@@ -8,4 +8,6 @@ export declare class Si14Service {
         cookies: puppeteer.Protocol.Network.Cookie[];
         pageContext: IPageContext;
     }>;
+    parseBalance(pageContext: IPageContext): Promise<number>;
+    parseLeagues(sportName: string, pageContext: IPageContext): Promise<{}>;
 }

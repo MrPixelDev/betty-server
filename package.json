@@ -25,8 +25,10 @@
     "@nestjs/core": "^9.0.0",
     "@nestjs/jwt": "^10.0.1",
     "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/platform-socket.io": "^9.3.9",
     "@nestjs/sequelize": "^9.0.0",
     "@nestjs/swagger": "^6.2.1",
+    "@nestjs/websockets": "^9.3.9",
     "@types/puppeteer": "^7.0.4",
     "bcryptjs": "^2.4.3",
     "chromedriver": "^110.0.0",
@@ -45,7 +47,8 @@
     "selenium-webdriver": "^4.8.0",
     "sequelize": "^6.28.0",
     "sequelize-typescript": "^2.1.5",
-    "swagger-ui-express": "^4.6.0"
+    "swagger-ui-express": "^4.6.0",
+    "utils-decorators": "^2.0.5"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

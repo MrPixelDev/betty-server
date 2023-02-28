@@ -16,7 +16,8 @@ const auth_module_1 = require("./auth/auth.module");
 const api_module_1 = require("./api/api.module");
 const puppet_module_1 = require("./worker/puppet/puppet.module");
 const worker_module_1 = require("./worker/worker.module");
-const worker_model_1 = require("./worker/worker.model");
+const state_model_1 = require("./worker/state/state.model");
+const state_module_1 = require("./worker/state/state.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -34,7 +35,7 @@ AppModule = __decorate([
                 username: process.env.POSTGRES_USER,
                 password: process.env.POSTGRES_PASSWORD,
                 database: process.env.POSTGRES_DB,
-                models: [users_model_1.User, users_model_1.Token, worker_model_1.StateCredentials, worker_model_1.State],
+                models: [users_model_1.User, users_model_1.Token, state_model_1.StateCredentials, state_model_1.State, state_model_1.Strategy, state_model_1.Stock],
                 autoLoadModels: Boolean(process.env.POSTGRES_AUTO_LOAD_MODELS),
                 synchronize: Boolean(process.env.POSTGRES_SYNC),
             }),
@@ -43,6 +44,7 @@ AppModule = __decorate([
             api_module_1.ApiModule,
             puppet_module_1.PuppetModule,
             worker_module_1.WorkerModule,
+            state_module_1.StateModule,
         ],
     })
 ], AppModule);

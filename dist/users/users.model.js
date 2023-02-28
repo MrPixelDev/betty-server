@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Token = exports.User = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const sequelize_typescript_1 = require("sequelize-typescript");
-const worker_model_1 = require("../worker/worker.model");
+const state_model_1 = require("../worker/state/state.model");
 let User = class User extends sequelize_typescript_1.Model {
 };
 __decorate([
@@ -62,7 +62,7 @@ __decorate([
     __metadata("design:type", Array)
 ], User.prototype, "refreshTokens", void 0);
 __decorate([
-    (0, sequelize_typescript_1.HasMany)(() => worker_model_1.StateCredentials, "userId"),
+    (0, sequelize_typescript_1.HasMany)(() => state_model_1.StateCredentials, "userId"),
     __metadata("design:type", Array)
 ], User.prototype, "stateCredentials", void 0);
 User = __decorate([

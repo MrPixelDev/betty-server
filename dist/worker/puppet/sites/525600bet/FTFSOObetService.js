@@ -16,7 +16,7 @@ let FTFSOObetService = class FTFSOObetService {
     async login(pageContext, userDto) {
         const page = pageContext.page;
         try {
-            page.setViewport({ width: 1024, height: 768 });
+            page.setViewport({ width: 1281, height: 768 });
             page.setDefaultNavigationTimeout(120000);
             await page.goto(`${process.env.FTFSOOBET_URL}login`);
             const checkForLogin = async () => {
@@ -40,18 +40,26 @@ let FTFSOObetService = class FTFSOObetService {
                     return { cookies, pageContext };
                 }
                 else {
-                    await page.close();
-                    throw new common_1.HttpException("Неверное имя пользователя или пароль", common_1.HttpStatus.BAD_REQUEST);
+                    throw new common_1.HttpException("Не валидные данные 525600bet", common_1.HttpStatus.BAD_REQUEST);
                 }
             };
             return await checkForLogin();
         }
         catch (e) {
             await page.close();
-            console.log("--------------ERROR-------------");
-            console.log(e.message);
-            console.log("--------------ERROR-------------");
-            throw new common_1.HttpException("Неверное имя пользователя или пароль", common_1.HttpStatus.BAD_REQUEST);
+            throw e;
+        }
+    }
+    async parseBalance(pageContext) {
+        const page = pageContext.page;
+        try {
+            await page.waitForSelector("#balanceForChange");
+            const trgt = await page.$("#balanceForChange");
+            const textContent = await page.evaluate((el) => el.textContent, trgt);
+            return +textContent;
+        }
+        catch (e) {
+            throw e;
         }
     }
 };

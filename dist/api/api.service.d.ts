@@ -9,4 +9,5 @@ export declare class ApiService {
     login(userApiDto: UserApiDto): Promise<any>;
     logout(pageDto: PageDto): Promise<void>;
     getState(getStateDto: GetStateDto): Promise<IGetStateResponse | any>;
+    parseStrategies(getStateDto: GetStateDto): Promise<any>;
 }

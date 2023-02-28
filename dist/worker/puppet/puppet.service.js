@@ -14,11 +14,13 @@ const common_1 = require("@nestjs/common");
 const puppeteer = require("puppeteer");
 const sites_enum_1 = require("../../api/enum/sites.enum");
 const FTFSOObetService_1 = require("./sites/525600bet/FTFSOObetService");
+const fonbetService_1 = require("./sites/fonbet/fonbetService");
 const Si14Service_1 = require("./sites/si14/Si14Service");
 let PuppetService = class PuppetService {
-    constructor(si14Service, ftfsooService) {
+    constructor(si14Service, ftfsooService, fonbetService) {
         this.si14Service = si14Service;
         this.ftfsooService = ftfsooService;
+        this.fonbetService = fonbetService;
         puppeteer
             .launch({
             headless: false,
@@ -48,11 +50,38 @@ let PuppetService = class PuppetService {
     async logout(pageDto) {
         await this.pages[pageDto.pageIndex].page.close();
     }
+    async parseBalances(getStateDto) {
+        let biBalance;
+        let bkBalance;
+        switch (getStateDto.bi.name) {
+            case sites_enum_1.SiteEnum.SI14:
+                biBalance = await this.si14Service.parseBalance(this.pages[getStateDto.bi.pageIndex]);
+                break;
+        }
+        switch (getStateDto.bk.name) {
+            case sites_enum_1.SiteEnum.FTFSOOBET:
+                bkBalance = await this.ftfsooService.parseBalance(this.pages[getStateDto.bk.pageIndex]);
+                break;
+        }
+        return {
+            biBalance,
+            bkBalance,
+        };
+    }
+    async parseLeagues(sportName, pageIndex) {
+        const parsed = await this.si14Service.parseLeagues(sportName, this.pages[pageIndex]);
+        return parsed;
+    }
+    async parseBetList(leagueEvent) {
+        const pageContext = await this.getNewPage();
+        return await this.fonbetService.parseBetList(leagueEvent, this.pages[pageContext.index]);
+    }
 };
 PuppetService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [Si14Service_1.Si14Service,
-        FTFSOObetService_1.FTFSOObetService])
+        FTFSOObetService_1.FTFSOObetService,
+        fonbetService_1.FonbetService])
 ], PuppetService);
 exports.PuppetService = PuppetService;
 //# sourceMappingURL=puppet.service.js.map

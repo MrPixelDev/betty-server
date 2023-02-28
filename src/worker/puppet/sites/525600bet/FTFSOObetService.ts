@@ -10,7 +10,7 @@ export class FTFSOObetService {
   async login(pageContext: IPageContext, userDto: UserDto) {
     const page = pageContext.page;
     try {
-      page.setViewport({ width: 1024, height: 768 });
+      page.setViewport({ width: 1281, height: 768 });
       page.setDefaultNavigationTimeout(120000);
 
       await page.goto(`${process.env.FTFSOOBET_URL}login`);
@@ -35,9 +35,8 @@ export class FTFSOObetService {
           const cookies = await page.cookies();
           return { cookies, pageContext };
         } else {
-          await page.close();
           throw new HttpException(
-            "Неверное имя пользователя или пароль",
+            "Не валидные данные 525600bet",
             HttpStatus.BAD_REQUEST
           );
         }
@@ -46,13 +45,20 @@ export class FTFSOObetService {
       return await checkForLogin();
     } catch (e) {
       await page.close();
-      console.log("--------------ERROR-------------");
-      console.log(e.message);
-      console.log("--------------ERROR-------------");
-      throw new HttpException(
-        "Неверное имя пользователя или пароль",
-        HttpStatus.BAD_REQUEST
-      );
+      throw e;
+    }
+  }
+
+  async parseBalance(pageContext: IPageContext) {
+    const page = pageContext.page;
+    try {
+      await page.waitForSelector("#balanceForChange");
+      const trgt = await page.$("#balanceForChange");
+      const textContent = await page.evaluate((el) => el.textContent, trgt);
+      return +textContent;
+    } catch (e) {
+      // await page.close();
+      throw e;
     }
   }
 }

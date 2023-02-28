@@ -8,71 +8,53 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WorkerService = void 0;
 const common_1 = require("@nestjs/common");
-const sequelize_1 = require("@nestjs/sequelize");
 const puppet_service_1 = require("./puppet/puppet.service");
-const worker_model_1 = require("./worker.model");
+const state_service_1 = require("./state/state.service");
+const SportNames_enum_1 = require("./enum/SportNames.enum");
 let WorkerService = class WorkerService {
-    constructor(stateCredentialsRepository, stateRepository, puppetService) {
-        this.stateCredentialsRepository = stateCredentialsRepository;
-        this.stateRepository = stateRepository;
+    constructor(stateService, puppetService) {
+        this.stateService = stateService;
         this.puppetService = puppetService;
-    }
-    async findStateCredentials(getStateDto) {
-        return await this.stateCredentialsRepository.findOne({
-            where: {
-                userId: getStateDto.userId,
-                biName: getStateDto.bi.name,
-                biLogin: getStateDto.bi.login,
-                biPassword: getStateDto.bi.password,
-                bkName: getStateDto.bk.name,
-                bkLogin: getStateDto.bk.login,
-                bkPassword: getStateDto.bk.password,
-            },
-            include: { all: true },
-        });
-    }
-    async findState(stateCredentials) {
-        return await this.stateRepository.findOne({
-            where: {
-                stateId: stateCredentials.stateId,
-            },
-            include: { all: true },
-        });
-    }
-    async createState(getStateDto) {
-        console.log("----------------------CREATING STATE----------");
-        const newState = await this.stateRepository.create({});
-        await this.stateCredentialsRepository.create({
-            userId: getStateDto.userId,
-            biName: getStateDto.bi.name,
-            biLogin: getStateDto.bi.login,
-            biPassword: getStateDto.bi.password,
-            bkName: getStateDto.bk.name,
-            bkLogin: getStateDto.bk.login,
-            bkPassword: getStateDto.bk.password,
-            stateId: newState.stateId,
-        });
-        const stateCredentials = await this.findStateCredentials(getStateDto);
-        return await this.updateState(getStateDto, stateCredentials);
-    }
-    async updateState(getStateDto, stateCredentials) {
-        const current = await this.findState(stateCredentials);
-        console.log("------------------UPDAATEEEE----------");
-        console.log(stateCredentials);
-        console.log(stateCredentials.state);
-        console.log("------------------UPDAATEEEE----------");
-        const updated = await this.findState(stateCredentials);
-        return updated;
     }
     async siteLogin(userApiDto) {
         const response = await this.puppetService.login(userApiDto);
         return response;
+    }
+    async parseStrategies(stateId) {
+        return [];
+    }
+    async parseProfit(stateId) {
+        return 0;
+    }
+    async parseBets(getStateDto) {
+        const bets = {};
+        for (let sportName of Object.values(SportNames_enum_1.SportNames)) {
+            const leagues = await this.puppetService.parseLeagues(sportName, getStateDto.bi.pageIndex);
+            bets[sportName] = leagues;
+            for (let leagueEvent of Object.values(leagues)) {
+                for (let leagueEventKey of Object.keys(leagueEvent)) {
+                    leagueEvent[leagueEventKey] = ["abc", "bcd"];
+                }
+            }
+        }
+        return bets;
+    }
+    async parseState(stateCredentials, getStateDto) {
+        const balances = await this.puppetService.parseBalances(getStateDto);
+        const profit = await this.parseProfit(stateCredentials.stateId);
+        const strategyList = [
+            ...(await this.parseStrategies(stateCredentials.stateId)),
+        ];
+        return {
+            stateId: stateCredentials.stateId,
+            biBalance: balances.biBalance,
+            bkBalance: balances.bkBalance,
+            profit,
+            strategyList,
+        };
     }
     async apiCallSiteLogin(userApiDto) {
         const response = await this.siteLogin(userApiDto);
@@ -80,23 +62,35 @@ let WorkerService = class WorkerService {
     }
     async apiCallSiteLogout(pageDto) {
         const response = await this.puppetService.logout(pageDto);
+        return response;
     }
     async apiCallGetState(getStateDto) {
-        console.log("---------------SEARCHINGSTATE-------------------");
-        const stateCredentials = await this.findStateCredentials(getStateDto);
+        const stateCredentials = await this.stateService.findStateCredentials(getStateDto);
         if (!stateCredentials) {
-            return await this.createState(getStateDto);
+            const newState = await this.stateService.createState(getStateDto);
+            const parsedState = await this.parseState(newState.stateCredentials, getStateDto);
+            return await this.stateService.updateState(newState.stateCredentials, parsedState);
         }
-        console.log("-------------STATE CREDENTIALS-----------");
-        console.log(stateCredentials);
-        return await this.updateState(getStateDto, stateCredentials);
+        const updatedState = await this.parseState(stateCredentials, getStateDto);
+        return await this.stateService.updateState(stateCredentials, updatedState);
+    }
+    async apiCallGetStrategies(getStateDto) {
+        const bets = await this.parseBets(getStateDto);
+        const marginalitys = [10, 20, 30];
+        const obligations = [10, 50, 100];
+        const stackSizes = [10, 15, 20];
+        return {
+            bets,
+            marginalitys,
+            obligations,
+            stackSizes,
+        };
     }
 };
 WorkerService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, sequelize_1.InjectModel)(worker_model_1.StateCredentials)),
-    __param(1, (0, sequelize_1.InjectModel)(worker_model_1.State)),
-    __metadata("design:paramtypes", [Object, Object, puppet_service_1.PuppetService])
+    __metadata("design:paramtypes", [state_service_1.StateService,
+        puppet_service_1.PuppetService])
 ], WorkerService);
 exports.WorkerService = WorkerService;
 //# sourceMappingURL=worker.service.js.map
