@@ -4,7 +4,8 @@ import { Cluster } from "puppeteer-cluster";
 import { GetStateDto, PageDto } from "src/api/dto/api.dto";
 import { SiteEnum } from "src/api/enum/sites.enum";
 import { UserApiDto, UserDto } from "src/users/dto/user.dto";
-import { ILeague } from "../dto/worker.dto";
+import { ILeague, ILeagueEvents } from "../dto/worker.dto";
+import { SportNames } from "../enum/SportNames.enum";
 import { FTFSOObetService } from "./sites/525600bet/FTFSOObetService";
 import { FonbetService } from "./sites/fonbet/fonbetService";
 import { Si14Service } from "./sites/si14/Si14Service";
@@ -108,10 +109,14 @@ export class PuppetService {
   //   );
   // }
 
-  async parseBetList(leagueEvent: string) {
-    const pageContext = await this.getNewPage();
+  async parseBetList(
+    leagueEvents: ILeagueEvents,
+    sportName: SportNames,
+    pageContext: IPageContext
+  ) {
     return await this.fonbetService.parseBetList(
-      leagueEvent,
+      leagueEvents,
+      sportName,
       this.pages[pageContext.index]
     );
   }

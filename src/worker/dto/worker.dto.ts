@@ -5,10 +5,12 @@ export class BalancesDto {
   readonly bkBalance: number;
 }
 
+export interface ILeagueEvents {
+  [leagueEvents: string]: string[];
+}
+
 export interface ILeague {
-  [league: string]: {
-    [leagueEvent: string]: string[];
-  };
+  [league: string]: ILeagueEvents;
 }
 
 export interface IBets {

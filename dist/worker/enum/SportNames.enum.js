@@ -9,7 +9,6 @@ var SportNames;
     SportNames["ICE_HOCKEY"] = "ice_hockey";
     SportNames["TENNIS"] = "tennis";
     SportNames["HANDBALL"] = "handball";
-    SportNames["AMERICAN_FOOTBALL"] = "american_football";
     SportNames["VOLLEYBALL"] = "volleyball";
 })(SportNames = exports.SportNames || (exports.SportNames = {}));
 //# sourceMappingURL=SportNames.enum.js.map

@@ -70,23 +70,30 @@ let Si14Service = class Si14Service {
             await page.waitForSelector(".bets-table__body");
             const pages = await page.$(".pagination-component");
             const pagesLength = await pages.$$(".circle");
+            await page.waitForSelector("tbody.bets-table__body");
             const table = await page.$("tbody.bets-table__body");
             const tableRows = await table.$$("tr");
             const leagues = {};
-            const leagueEvents = {};
             for (let i = 0; i < pagesLength.length; i++) {
                 for (let j = 0; j < tableRows.length; j++) {
+                    const leagueEvents = {};
                     const league = await tableRows[j].$$("td.bets-table-cell__league > *");
                     const leagueText = await page.evaluate((el) => el.textContent, league[league.length - 1]);
                     const rivals = await tableRows[j].$(".bets-table-cell__rivals");
                     const leagueEventText = await page.evaluate((el) => el.innerHTML.replace("<br>", " - "), rivals);
-                    leagueEvents[leagueEventText] = [];
-                    leagues[leagueText] = leagueEvents;
+                    if (leagues[leagueText]) {
+                        leagues[leagueText][leagueEventText] = [];
+                    }
+                    else {
+                        leagueEvents[leagueEventText] = [];
+                        leagues[leagueText] = leagueEvents;
+                    }
                 }
                 const rightBtns = await pages.$$("> *");
                 const nextBtns = await rightBtns[rightBtns.length - 1].$$("button.pagination-block");
                 await nextBtns[0].click();
             }
+            console.log(JSON.stringify(leagues));
             return leagues;
         }
         catch (e) {

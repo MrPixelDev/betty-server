@@ -72,9 +72,8 @@ let PuppetService = class PuppetService {
         const parsed = await this.si14Service.parseLeagues(sportName, this.pages[pageIndex]);
         return parsed;
     }
-    async parseBetList(leagueEvent) {
-        const pageContext = await this.getNewPage();
-        return await this.fonbetService.parseBetList(leagueEvent, this.pages[pageContext.index]);
+    async parseBetList(leagueEvents, sportName, pageContext) {
+        return await this.fonbetService.parseBetList(leagueEvents, sportName, this.pages[pageContext.index]);
     }
 };
 PuppetService = __decorate([

@@ -1,7 +1,8 @@
 import * as puppeteer from "puppeteer";
 import { GetStateDto, PageDto } from "src/api/dto/api.dto";
 import { UserApiDto } from "src/users/dto/user.dto";
-import { ILeague } from "../dto/worker.dto";
+import { ILeague, ILeagueEvents } from "../dto/worker.dto";
+import { SportNames } from "../enum/SportNames.enum";
 import { FTFSOObetService } from "./sites/525600bet/FTFSOObetService";
 import { FonbetService } from "./sites/fonbet/fonbetService";
 import { Si14Service } from "./sites/si14/Si14Service";
@@ -25,5 +26,5 @@ export declare class PuppetService {
         bkBalance: number;
     }>;
     parseLeagues(sportName: string, pageIndex: number): Promise<ILeague>;
-    parseBetList(leagueEvent: string): Promise<void>;
+    parseBetList(leagueEvents: ILeagueEvents, sportName: SportNames, pageContext: IPageContext): Promise<ILeagueEvents>;
 }

@@ -31,14 +31,13 @@ let WorkerService = class WorkerService {
     }
     async parseBets(getStateDto) {
         const bets = {};
+        const fonbetContext = await this.puppetService.getNewPage();
         for (let sportName of Object.values(SportNames_enum_1.SportNames)) {
             const leagues = await this.puppetService.parseLeagues(sportName, getStateDto.bi.pageIndex);
-            bets[sportName] = leagues;
-            for (let leagueEvent of Object.values(leagues)) {
-                for (let leagueEventKey of Object.keys(leagueEvent)) {
-                    leagueEvent[leagueEventKey] = ["abc", "bcd"];
-                }
+            for (let league of Object.keys(leagues)) {
+                leagues[league] = await this.puppetService.parseBetList(leagues[league], sportName, fonbetContext);
             }
+            bets[sportName] = leagues;
         }
         return bets;
     }

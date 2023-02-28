@@ -30,17 +30,25 @@ export class WorkerService {
 
   private async parseBets(getStateDto: GetStateDto) {
     const bets = {};
+    const fonbetContext = await this.puppetService.getNewPage();
     for (let sportName of Object.values(SportNames)) {
       const leagues = await this.puppetService.parseLeagues(
         sportName,
         getStateDto.bi.pageIndex
       );
-      bets[sportName] = leagues;
-      for (let leagueEvent of Object.values(leagues)) {
-        for (let leagueEventKey of Object.keys(leagueEvent)) {
-          leagueEvent[leagueEventKey] = ["abc", "bcd"];
-        }
+      for (let league of Object.keys(leagues)) {
+        leagues[league] = await this.puppetService.parseBetList(
+          leagues[league],
+          sportName,
+          fonbetContext
+        );
+        // for (let leagueEventKey of Object.keys(leagueEvents)) {
+        //   leagueEvents[leagueEventKey] = await this.puppetService.parseBetList(
+        //     leagueEvents
+        //   );
+        // }
       }
+      bets[sportName] = leagues;
     }
     return bets;
   }
