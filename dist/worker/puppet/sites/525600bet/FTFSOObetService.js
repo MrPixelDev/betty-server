@@ -18,7 +18,7 @@ let FTFSOObetService = class FTFSOObetService {
         try {
             page.setViewport({ width: 1281, height: 768 });
             page.setDefaultNavigationTimeout(120000);
-            await page.goto(`${process.env.FTFSOOBET_URL}login`);
+            await page.goto(`${process.env.FTFSOOBET_URL}/login`);
             const checkForLogin = async () => {
                 const title = await page.title();
                 const alertEl = await page.$(".alert-danger");

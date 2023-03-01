@@ -63,7 +63,7 @@ let Si14Service = class Si14Service {
     async parseLeagues(sportName, pageContext) {
         const page = pageContext.page;
         try {
-            await page.goto(`${process.env.SI14_URL}viewAll/${sportName}`);
+            await page.goto(`${process.env.SI14_URL}/viewAll/${sportName}`);
             await page.waitForSelector(".bets-table__body");
             const tomorrowBtns = await page.$$(".league-header__buttons__button ");
             await tomorrowBtns[3].click();

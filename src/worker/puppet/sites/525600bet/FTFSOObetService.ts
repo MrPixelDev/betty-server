@@ -13,7 +13,7 @@ export class FTFSOObetService {
       page.setViewport({ width: 1281, height: 768 });
       page.setDefaultNavigationTimeout(120000);
 
-      await page.goto(`${process.env.FTFSOOBET_URL}login`);
+      await page.goto(`${process.env.FTFSOOBET_URL}/login`);
 
       const checkForLogin = async () => {
         const title = await page.title();

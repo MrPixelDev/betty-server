@@ -31,6 +31,9 @@ export class WorkerService {
   private async parseBets(getStateDto: GetStateDto) {
     const bets = {};
     const fonbetContext = await this.puppetService.getNewPage();
+    fonbetContext.page.setUserAgent(
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36"
+    );
     for (let sportName of Object.values(SportNames)) {
       const leagues = await this.puppetService.parseLeagues(
         sportName,
@@ -50,6 +53,7 @@ export class WorkerService {
       }
       bets[sportName] = leagues;
     }
+    fonbetContext.page.close();
     return bets;
   }
 

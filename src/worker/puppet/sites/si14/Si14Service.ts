@@ -87,7 +87,7 @@ export class Si14Service {
   async parseLeagues(sportName: string, pageContext: IPageContext) {
     const page = pageContext.page;
     try {
-      await page.goto(`${process.env.SI14_URL}viewAll/${sportName}`);
+      await page.goto(`${process.env.SI14_URL}/viewAll/${sportName}`);
 
       await page.waitForSelector(".bets-table__body");
 

@@ -13,6 +13,7 @@ export declare class FonbetService {
         volleyball: string;
     };
     constructor();
+    parseTextContent(page: puppeteer.Page, el: puppeteer.ElementHandle<Element>, selector: string): Promise<string>;
     parseBetList(leagueEvents: ILeagueEvents, sportName: SportNames, pageContext: IPageContext): Promise<ILeagueEvents>;
-    parseBets(page: puppeteer.Page, link: puppeteer.ElementHandle<HTMLAnchorElement>): Promise<string[]>;
+    parseBets(page: puppeteer.Page, links: puppeteer.ElementHandle<HTMLAnchorElement>[], leagueEvents: ILeagueEvents, eventListKeys: string[]): Promise<ILeagueEvents>;
 }
