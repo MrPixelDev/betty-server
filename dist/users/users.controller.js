@@ -23,8 +23,11 @@ let UsersController = class UsersController {
     constructor(usersService) {
         this.usersService = usersService;
     }
-    registration(userDto) {
-        return this.usersService.registration(userDto);
+    registration(userRegisterDto) {
+        return this.usersService.registration(userRegisterDto);
+    }
+    setRole(rolesDto) {
+        return this.usersService.setRole(rolesDto);
     }
     getAll() {
         return this.usersService.getAllUsers();
@@ -34,9 +37,17 @@ __decorate([
     (0, common_1.Post)("/registration"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_dto_1.UserDto]),
+    __metadata("design:paramtypes", [user_dto_1.UserRegisterDto]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "registration", null);
+__decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.Post)("/set-role"),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_dto_1.RolesDto]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "setRole", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: "Return all users" }),
     (0, swagger_1.ApiResponse)({ status: 200, type: [users_model_1.User] }),

@@ -4,11 +4,5 @@ exports.SportNames = void 0;
 var SportNames;
 (function (SportNames) {
     SportNames["SOCCER"] = "soccer";
-    SportNames["BASKETBALL"] = "basketball";
-    SportNames["BASEBALL"] = "baseball";
-    SportNames["ICE_HOCKEY"] = "ice_hockey";
-    SportNames["TENNIS"] = "tennis";
-    SportNames["HANDBALL"] = "handball";
-    SportNames["VOLLEYBALL"] = "volleyball";
 })(SportNames = exports.SportNames || (exports.SportNames = {}));
 //# sourceMappingURL=SportNames.enum.js.map

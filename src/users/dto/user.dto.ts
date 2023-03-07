@@ -13,9 +13,20 @@ export class UserDto {
   readonly password: string;
 }
 
+export class UserRegisterDto {
+  readonly username: string;
+  readonly password: string;
+  readonly role: string;
+}
+
 export class UserApiDto {
   readonly userId: number;
   readonly username: string;
   readonly password: string;
   readonly site: SiteEnum;
+}
+
+export class RolesDto {
+  readonly username: string;
+  readonly role: string;
 }

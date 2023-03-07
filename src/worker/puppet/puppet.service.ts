@@ -39,7 +39,7 @@ export class PuppetService {
     // });
     puppeteer
       .launch({
-        headless: true,
+        headless: false,
       })
       .then((browser) => {
         this.browser = browser;

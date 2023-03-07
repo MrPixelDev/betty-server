@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { UserDto } from "./dto/user.dto";
+import { RolesDto, UserDto, UserRegisterDto } from "./dto/user.dto";
 import { Token, User } from "./users.model";
 import * as bcrypt from "bcryptjs";
 import { Op } from "sequelize";
@@ -19,8 +19,17 @@ export class UsersService {
     return await this.userRepository.upsert({ ...user });
   }
 
-  async createUser(dto: UserDto) {
-    return await this.userRepository.create(dto);
+  async createUser(userRegisterDto: UserRegisterDto) {
+    return await this.userRepository.create(userRegisterDto);
+  }
+
+  async setRole(rolesDto: RolesDto) {
+    const user = await this.getUserByUsername(rolesDto.username);
+    if (!user) {
+      throw new Error("Пользователь не найден");
+    }
+    await user.$set("role", rolesDto.role);
+    return user;
   }
 
   // TODO: RefreshTokenDto
@@ -49,17 +58,17 @@ export class UsersService {
     return user;
   }
 
-  async registration(userDto: UserDto) {
-    const candidate = await this.getUserByUsername(userDto.username);
+  async registration(userRegisterDto: UserRegisterDto) {
+    const candidate = await this.getUserByUsername(userRegisterDto.username);
     if (candidate) {
       throw new HttpException(
         "Пользователь с таким email существует",
         HttpStatus.BAD_REQUEST
       );
     }
-    const hashPassword = await bcrypt.hash(userDto.password, 5);
+    const hashPassword = await bcrypt.hash(userRegisterDto.password, 5);
     const user = await this.createUser({
-      ...userDto,
+      ...userRegisterDto,
       password: hashPassword,
     });
     return user;
@@ -92,12 +101,5 @@ export class UsersService {
         },
       },
     });
-    //   await this.tokenRepository.destroy({
-    //     where: {
-    //       expiresAt: {
-    //         [Op.lt]: Sequelize.literal("NOW()"),
-    //       },
-    //     },
-    //   });
   }
 }

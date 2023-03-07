@@ -23,7 +23,7 @@ let PuppetService = class PuppetService {
         this.fonbetService = fonbetService;
         puppeteer
             .launch({
-            headless: true,
+            headless: false,
         })
             .then((browser) => {
             this.browser = browser;

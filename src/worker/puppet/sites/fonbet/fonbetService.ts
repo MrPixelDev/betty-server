@@ -53,6 +53,9 @@ export class FonbetService {
         );
       }
 
+      await page.goto(
+        `${process.env.FONBET_URL}/sports/${this.sportNamesFonbet[sportName]}/?dateInterval=7`
+      );
       await page.waitForSelector(".sport-section-virtual-list--6lYPYe");
       const eventBlock = await page.$(".sport-section-virtual-list--6lYPYe");
       const eventList = await eventBlock.$$(".sport-base-event--pDx9cf");

@@ -29,8 +29,16 @@ let UsersService = class UsersService {
     async updateUser(user) {
         return await this.userRepository.upsert(Object.assign({}, user));
     }
-    async createUser(dto) {
-        return await this.userRepository.create(dto);
+    async createUser(userRegisterDto) {
+        return await this.userRepository.create(userRegisterDto);
+    }
+    async setRole(rolesDto) {
+        const user = await this.getUserByUsername(rolesDto.username);
+        if (!user) {
+            throw new Error("Пользователь не найден");
+        }
+        await user.$set("role", rolesDto.role);
+        return user;
     }
     async addRefreshToken({ refreshToken, user }) {
         this.removeExpiredTokens();
@@ -52,13 +60,13 @@ let UsersService = class UsersService {
         });
         return user;
     }
-    async registration(userDto) {
-        const candidate = await this.getUserByUsername(userDto.username);
+    async registration(userRegisterDto) {
+        const candidate = await this.getUserByUsername(userRegisterDto.username);
         if (candidate) {
             throw new common_1.HttpException("Пользователь с таким email существует", common_1.HttpStatus.BAD_REQUEST);
         }
-        const hashPassword = await bcrypt.hash(userDto.password, 5);
-        const user = await this.createUser(Object.assign(Object.assign({}, userDto), { password: hashPassword }));
+        const hashPassword = await bcrypt.hash(userRegisterDto.password, 5);
+        const user = await this.createUser(Object.assign(Object.assign({}, userRegisterDto), { password: hashPassword }));
         return user;
     }
     async getUserByRefreshToken(refreshToken) {

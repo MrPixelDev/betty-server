@@ -8,6 +8,7 @@ export declare class User extends Model<User, UserCreationAttrs> {
     userId: number;
     username: string;
     password: string;
+    role: string;
     banned: boolean;
     banReason: string;
     refreshTokens: Token[];
