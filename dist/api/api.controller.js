@@ -17,11 +17,18 @@ const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const RateLimitInterceptor_1 = require("../common/middlewares/RateLimitInterceptor");
 const user_dto_1 = require("../users/dto/user.dto");
+const state_model_1 = require("../worker/state/state.model");
 const api_service_1 = require("./api.service");
 const api_dto_1 = require("./dto/api.dto");
 let ApiController = class ApiController {
     constructor(apiService) {
         this.apiService = apiService;
+    }
+    async parseStrategyModel() {
+        return await this.apiService.parseStrategyModel();
+    }
+    async getAvailableStrategies() {
+        return await this.apiService.getAvailableStrategies();
     }
     async login(userApiDto) {
         return await this.apiService.login(userApiDto);
@@ -32,10 +39,30 @@ let ApiController = class ApiController {
     async getState(getStateDto) {
         return await this.apiService.getState(getStateDto);
     }
-    async parseStrategies(getStateDto) {
-        return await this.apiService.parseStrategies(getStateDto);
+    async createStrategy(strategyDto) {
+        return await this.apiService.createStrategy(strategyDto);
+    }
+    async bindStrategy(stateId, strategy) {
+        return await this.apiService.bindStrategy(stateId, strategy);
+    }
+    async setStrategyStatus(strategyId, dto) {
+        return await this.apiService.setStrategyStatus(strategyId, dto);
     }
 };
+__decorate([
+    (0, common_1.UseInterceptors)(new RateLimitInterceptor_1.RateLimitInterceptor()),
+    (0, common_1.Get)("parsestrategymodel"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], ApiController.prototype, "parseStrategyModel", null);
+__decorate([
+    (0, common_1.UseInterceptors)(new RateLimitInterceptor_1.RateLimitInterceptor()),
+    (0, common_1.Get)("getavailablestrategies"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], ApiController.prototype, "getAvailableStrategies", null);
 __decorate([
     (0, common_1.Post)("/login"),
     __param(0, (0, common_1.Body)()),
@@ -60,12 +87,30 @@ __decorate([
 ], ApiController.prototype, "getState", null);
 __decorate([
     (0, common_1.UseInterceptors)(new RateLimitInterceptor_1.RateLimitInterceptor()),
-    (0, common_1.Post)("parsestrategies"),
+    (0, common_1.Post)("createstrategy"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [api_dto_1.GetStateDto]),
+    __metadata("design:paramtypes", [api_dto_1.StrategyDto]),
     __metadata("design:returntype", Promise)
-], ApiController.prototype, "parseStrategies", null);
+], ApiController.prototype, "createStrategy", null);
+__decorate([
+    (0, common_1.UseInterceptors)(new RateLimitInterceptor_1.RateLimitInterceptor()),
+    (0, common_1.Put)("bind-strategy/:state"),
+    __param(0, (0, common_1.Param)("state")),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, state_model_1.Strategy]),
+    __metadata("design:returntype", Promise)
+], ApiController.prototype, "bindStrategy", null);
+__decorate([
+    (0, common_1.UseInterceptors)(new RateLimitInterceptor_1.RateLimitInterceptor()),
+    (0, common_1.Put)("set-strategy-status/:strategyId"),
+    __param(0, (0, common_1.Param)("strategyId")),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, api_dto_1.StatusDto]),
+    __metadata("design:returntype", Promise)
+], ApiController.prototype, "setStrategyStatus", null);
 ApiController = __decorate([
     (0, swagger_1.ApiTags)("Api"),
     (0, common_1.Controller)("api"),

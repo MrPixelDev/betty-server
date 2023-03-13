@@ -19,3 +19,15 @@ export interface IGetStateResponse {
     bkBalance: number;
     profit: number;
 }
+export declare class StrategyDto {
+    readonly strategyName: string;
+    readonly sportName: string;
+    readonly league: string;
+    readonly bet: string;
+    readonly marginality: number;
+    readonly obligation: number;
+    readonly stackSize: number;
+}
+export declare class StatusDto {
+    readonly status: string;
+}

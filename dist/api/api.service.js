@@ -28,8 +28,24 @@ let ApiService = class ApiService {
         const response = await this.workerService.apiCallGetState(getStateDto);
         return response;
     }
-    async parseStrategies(getStateDto) {
-        const response = await this.workerService.apiCallGetStrategies(getStateDto);
+    async parseStrategyModel() {
+        const response = await this.workerService.apiCallGetStrategyModel();
+        return response;
+    }
+    async createStrategy(strategyDto) {
+        const response = await this.workerService.createStrategy(strategyDto);
+        return response;
+    }
+    async getAvailableStrategies() {
+        const response = await this.workerService.getAvailableStrategies();
+        return response;
+    }
+    async bindStrategy(stateId, strategy) {
+        const response = await this.workerService.bindStrategy(stateId, strategy);
+        return response;
+    }
+    async setStrategyStatus(strategyId, dto) {
+        const response = await this.workerService.setStrategyStatus(strategyId, dto.status);
         return response;
     }
 };

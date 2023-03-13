@@ -8,6 +8,7 @@ import { ApiModule } from "./api/api.module";
 import { PuppetModule } from "./worker/puppet/puppet.module";
 import { WorkerModule } from "./worker/worker.module";
 import {
+  AvailableStrategies,
   State,
   StateCredentials,
   Stock,
@@ -29,7 +30,15 @@ import { StateModule } from "./worker/state/state.module";
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User, Token, StateCredentials, State, Strategy, Stock],
+      models: [
+        User,
+        Token,
+        StateCredentials,
+        State,
+        Strategy,
+        Stock,
+        AvailableStrategies,
+      ],
       autoLoadModels: Boolean(process.env.POSTGRES_AUTO_LOAD_MODELS),
       synchronize: Boolean(process.env.POSTGRES_SYNC),
     }),

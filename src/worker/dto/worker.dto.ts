@@ -1,4 +1,4 @@
-import { SportNames } from "../enum/SportNames.enum";
+import { SportNames } from "../enum/worker.enum";
 
 export class BalancesDto {
   readonly biBalance: number;

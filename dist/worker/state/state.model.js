@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Stock = exports.Strategy = exports.StateCredentials = exports.State = void 0;
+exports.Stock = exports.Strategy = exports.AvailableStrategies = exports.StateCredentials = exports.State = void 0;
 const sequelize_typescript_1 = require("sequelize-typescript");
 const users_model_1 = require("../../users/users.model");
 let State = class State extends sequelize_typescript_1.Model {
@@ -122,6 +122,63 @@ StateCredentials = __decorate([
     (0, sequelize_typescript_1.Table)({ tableName: "stateCredentials" })
 ], StateCredentials);
 exports.StateCredentials = StateCredentials;
+let AvailableStrategies = class AvailableStrategies extends sequelize_typescript_1.Model {
+};
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.INTEGER,
+        unique: true,
+        autoIncrement: true,
+        primaryKey: true,
+    }),
+    __metadata("design:type", Number)
+], AvailableStrategies.prototype, "availableStrategyId", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.STRING,
+    }),
+    __metadata("design:type", String)
+], AvailableStrategies.prototype, "strategyName", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.STRING,
+    }),
+    __metadata("design:type", String)
+], AvailableStrategies.prototype, "sportName", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.STRING,
+    }),
+    __metadata("design:type", String)
+], AvailableStrategies.prototype, "league", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.STRING,
+    }),
+    __metadata("design:type", String)
+], AvailableStrategies.prototype, "bet", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.FLOAT,
+    }),
+    __metadata("design:type", Number)
+], AvailableStrategies.prototype, "marginality", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.FLOAT,
+    }),
+    __metadata("design:type", Number)
+], AvailableStrategies.prototype, "obligation", void 0);
+__decorate([
+    (0, sequelize_typescript_1.Column)({
+        type: sequelize_typescript_1.DataType.INTEGER,
+    }),
+    __metadata("design:type", Number)
+], AvailableStrategies.prototype, "stackSize", void 0);
+AvailableStrategies = __decorate([
+    (0, sequelize_typescript_1.Table)({ tableName: "availableStrategies" })
+], AvailableStrategies);
+exports.AvailableStrategies = AvailableStrategies;
 let Strategy = class Strategy extends sequelize_typescript_1.Model {
 };
 __decorate([
@@ -152,9 +209,9 @@ __decorate([
 ], Strategy.prototype, "strategyName", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.INTEGER,
+        type: sequelize_typescript_1.DataType.STRING,
     }),
-    __metadata("design:type", Number)
+    __metadata("design:type", String)
 ], Strategy.prototype, "status", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
@@ -168,12 +225,6 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], Strategy.prototype, "league", void 0);
-__decorate([
-    (0, sequelize_typescript_1.Column)({
-        type: sequelize_typescript_1.DataType.STRING,
-    }),
-    __metadata("design:type", String)
-], Strategy.prototype, "leagueEvent", void 0);
 __decorate([
     (0, sequelize_typescript_1.Column)({
         type: sequelize_typescript_1.DataType.STRING,

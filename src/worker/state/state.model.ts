@@ -99,6 +99,52 @@ export class StateCredentials extends Model<StateCredentials> {
   state: State;
 }
 
+@Table({ tableName: "availableStrategies" })
+export class AvailableStrategies extends Model<AvailableStrategies> {
+  @Column({
+    type: DataType.INTEGER,
+    unique: true,
+    autoIncrement: true,
+    primaryKey: true,
+  })
+  availableStrategyId: number;
+
+  @Column({
+    type: DataType.STRING,
+  })
+  strategyName: string;
+
+  @Column({
+    type: DataType.STRING,
+  })
+  sportName: string;
+
+  @Column({
+    type: DataType.STRING,
+  })
+  league: string;
+
+  @Column({
+    type: DataType.STRING,
+  })
+  bet: string;
+
+  @Column({
+    type: DataType.FLOAT,
+  })
+  marginality: number;
+
+  @Column({
+    type: DataType.FLOAT,
+  })
+  obligation: number;
+
+  @Column({
+    type: DataType.INTEGER,
+  })
+  stackSize: number;
+}
+
 @Table({ tableName: "strategy" })
 export class Strategy extends Model<Strategy> {
   @Column({
@@ -124,9 +170,9 @@ export class Strategy extends Model<Strategy> {
   strategyName: string;
 
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.STRING,
   })
-  status: number;
+  status: string;
 
   @Column({
     type: DataType.STRING,
@@ -137,11 +183,6 @@ export class Strategy extends Model<Strategy> {
     type: DataType.STRING,
   })
   league: string;
-
-  @Column({
-    type: DataType.STRING,
-  })
-  leagueEvent: string;
 
   @Column({
     type: DataType.STRING,

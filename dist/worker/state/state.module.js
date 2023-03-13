@@ -24,6 +24,7 @@ StateModule = __decorate([
                 state_model_1.State,
                 state_model_1.Strategy,
                 state_model_1.Stock,
+                state_model_1.AvailableStrategies,
             ]),
         ],
         exports: [state_service_1.StateService],

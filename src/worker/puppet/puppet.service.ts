@@ -5,7 +5,7 @@ import { GetStateDto, PageDto } from "src/api/dto/api.dto";
 import { SiteEnum } from "src/api/enum/sites.enum";
 import { UserApiDto, UserDto } from "src/users/dto/user.dto";
 import { ILeague, ILeagueEvents } from "../dto/worker.dto";
-import { SportNames } from "../enum/SportNames.enum";
+import { SportNames } from "../enum/worker.enum";
 import { FTFSOObetService } from "./sites/525600bet/FTFSOObetService";
 import { FonbetService } from "./sites/fonbet/fonbetService";
 import { Si14Service } from "./sites/si14/Si14Service";

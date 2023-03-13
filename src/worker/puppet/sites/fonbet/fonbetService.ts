@@ -8,7 +8,7 @@ import * as puppeteer from "puppeteer";
 import { IPageContext, PuppetService } from "src/worker/puppet/puppet.service";
 import { UserDto } from "src/users/dto/user.dto";
 import { ILeagueEvents } from "src/worker/dto/worker.dto";
-import { SportNames } from "src/worker/enum/SportNames.enum";
+import { SportNames } from "src/worker/enum/worker.enum";
 
 @Injectable()
 export class FonbetService {
@@ -47,15 +47,19 @@ export class FonbetService {
       page.setViewport({ width: 1281, height: 4000 });
       page.setDefaultNavigationTimeout(120000);
 
-      if (!page.url().includes(`${this.sportNamesFonbet[sportName]}`)) {
+      if (
+        !page
+          .url()
+          .includes(`${this.sportNamesFonbet[sportName]}/?dateInterval=7`)
+      ) {
         await page.goto(
           `${process.env.FONBET_URL}/sports/${this.sportNamesFonbet[sportName]}/?dateInterval=7`
         );
       }
 
-      await page.goto(
-        `${process.env.FONBET_URL}/sports/${this.sportNamesFonbet[sportName]}/?dateInterval=7`
-      );
+      // await page.goto(
+      //   `${process.env.FONBET_URL}/sports/${this.sportNamesFonbet[sportName]}/?dateInterval=7`
+      // );
       await page.waitForSelector(".sport-section-virtual-list--6lYPYe");
       const eventBlock = await page.$(".sport-section-virtual-list--6lYPYe");
       const eventList = await eventBlock.$$(".sport-base-event--pDx9cf");
@@ -86,8 +90,7 @@ export class FonbetService {
               let counter = 0;
               // console.log(eventKey);
               for (let rival of aRivals) {
-                // console.log(rival, eventKey.includes(rival));
-                if (eventKey.includes(rival)) {
+                if (eventKey.includes(rival) || rival.includes(eventKey)) {
                   counter++;
                 }
                 if (counter === 2) {
@@ -119,7 +122,7 @@ export class FonbetService {
     }
     for (let i = 0; i < hrefs.length; i++) {
       console.log("--------------linkOne---------");
-      console.log(hrefs[i]);
+      console.log(hrefs);
       await page.goto(`${process.env.FONBET_URL}${hrefs[i]}`);
       console.log("----------visited----------------");
       await page.waitForSelector(".event-view-tables-wrap--7IFsJk");

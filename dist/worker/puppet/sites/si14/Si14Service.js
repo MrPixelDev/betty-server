@@ -63,8 +63,11 @@ let Si14Service = class Si14Service {
     async parseLeagues(sportName, pageContext) {
         const page = pageContext.page;
         try {
+            page.setViewport({ width: 1281, height: 768 });
+            page.setDefaultNavigationTimeout(120000);
             await page.goto(`${process.env.SI14_URL}/viewAll/${sportName}`);
             await page.waitForSelector(".bets-table__body");
+            await page.waitForSelector(".league-header__buttons__button ");
             const tomorrowBtns = await page.$$(".league-header__buttons__button ");
             await tomorrowBtns[3].click();
             await page.waitForSelector(".bets-table__body");

@@ -1,7 +1,7 @@
 import * as puppeteer from "puppeteer";
 import { IPageContext } from "src/worker/puppet/puppet.service";
 import { ILeagueEvents } from "src/worker/dto/worker.dto";
-import { SportNames } from "src/worker/enum/SportNames.enum";
+import { SportNames } from "src/worker/enum/worker.enum";
 export declare class FonbetService {
     sportNamesFonbet: {
         soccer: string;

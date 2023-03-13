@@ -15,11 +15,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.StateService = void 0;
 const common_1 = require("@nestjs/common");
 const sequelize_1 = require("@nestjs/sequelize");
+const worker_enum_1 = require("../enum/worker.enum");
 const state_model_1 = require("./state.model");
 let StateService = class StateService {
-    constructor(stateCredentialsRepository, stateRepository) {
+    constructor(stateCredentialsRepository, stateRepository, availableStrategies, strategyRepository) {
         this.stateCredentialsRepository = stateCredentialsRepository;
         this.stateRepository = stateRepository;
+        this.availableStrategies = availableStrategies;
+        this.strategyRepository = strategyRepository;
     }
     async findStateCredentials(getStateDto) {
         return await this.stateCredentialsRepository.findOne({
@@ -64,12 +67,51 @@ let StateService = class StateService {
         const updated = await current.update(state);
         return updated;
     }
+    async findAvailableStrategy(strategyDto) {
+        return await this.availableStrategies.findOne({
+            where: Object.assign({}, strategyDto),
+        });
+    }
+    async findStrategy(stateId, strategy) {
+        return await this.strategyRepository.findOne({
+            where: Object.assign({ stateId }, strategy),
+        });
+    }
+    async createStrategy(strategyDto) {
+        const strategy = await this.findAvailableStrategy(strategyDto);
+        if (strategy) {
+            throw new common_1.HttpException("Стратегия уже существует", 500);
+        }
+        await this.availableStrategies.create(strategyDto);
+    }
+    async getAvailableStrategies() {
+        const strategies = await this.availableStrategies.findAll();
+        return strategies;
+    }
+    async bindStrategy(stateId, strategy) {
+        const exists = await this.findStrategy(stateId, strategy);
+        if (exists) {
+            throw new common_1.HttpException("Стратегия уже существует", 500);
+        }
+        await this.strategyRepository.create(Object.assign(Object.assign({ stateId }, strategy), { status: worker_enum_1.StrategyStatusEnum.STOPPED }));
+    }
+    async setStrategyStatus(strategyId, status) {
+        const current = await this.strategyRepository.findOne({
+            where: {
+                strategyId,
+            },
+            include: { all: true },
+        });
+        return current.update({ status });
+    }
 };
 StateService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, sequelize_1.InjectModel)(state_model_1.StateCredentials)),
     __param(1, (0, sequelize_1.InjectModel)(state_model_1.State)),
-    __metadata("design:paramtypes", [Object, Object])
+    __param(2, (0, sequelize_1.InjectModel)(state_model_1.AvailableStrategies)),
+    __param(3, (0, sequelize_1.InjectModel)(state_model_1.Strategy)),
+    __metadata("design:paramtypes", [Object, Object, Object, Object])
 ], StateService);
 exports.StateService = StateService;
 //# sourceMappingURL=state.service.js.map

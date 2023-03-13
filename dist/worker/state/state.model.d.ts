@@ -20,15 +20,24 @@ export declare class StateCredentials extends Model<StateCredentials> {
     stateId: number;
     state: State;
 }
+export declare class AvailableStrategies extends Model<AvailableStrategies> {
+    availableStrategyId: number;
+    strategyName: string;
+    sportName: string;
+    league: string;
+    bet: string;
+    marginality: number;
+    obligation: number;
+    stackSize: number;
+}
 export declare class Strategy extends Model<Strategy> {
     strategyId: number;
     stateId: number;
     state: State;
     strategyName: string;
-    status: number;
+    status: string;
     sportName: string;
     league: string;
-    leagueEvent: string;
     bet: string;
     obligation: number;
     marginality: number;

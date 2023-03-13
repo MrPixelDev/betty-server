@@ -36,10 +36,11 @@ let FonbetService = class FonbetService {
         try {
             page.setViewport({ width: 1281, height: 4000 });
             page.setDefaultNavigationTimeout(120000);
-            if (!page.url().includes(`${this.sportNamesFonbet[sportName]}`)) {
+            if (!page
+                .url()
+                .includes(`${this.sportNamesFonbet[sportName]}/?dateInterval=7`)) {
                 await page.goto(`${process.env.FONBET_URL}/sports/${this.sportNamesFonbet[sportName]}/?dateInterval=7`);
             }
-            await page.goto(`${process.env.FONBET_URL}/sports/${this.sportNamesFonbet[sportName]}/?dateInterval=7`);
             await page.waitForSelector(".sport-section-virtual-list--6lYPYe");
             const eventBlock = await page.$(".sport-section-virtual-list--6lYPYe");
             const eventList = await eventBlock.$$(".sport-base-event--pDx9cf");
@@ -58,7 +59,7 @@ let FonbetService = class FonbetService {
                         for (let eventKey of eventListKeys) {
                             let counter = 0;
                             for (let rival of aRivals) {
-                                if (eventKey.includes(rival)) {
+                                if (eventKey.includes(rival) || rival.includes(eventKey)) {
                                     counter++;
                                 }
                                 if (counter === 2) {
@@ -83,7 +84,7 @@ let FonbetService = class FonbetService {
         }
         for (let i = 0; i < hrefs.length; i++) {
             console.log("--------------linkOne---------");
-            console.log(hrefs[i]);
+            console.log(hrefs);
             await page.goto(`${process.env.FONBET_URL}${hrefs[i]}`);
             console.log("----------visited----------------");
             await page.waitForSelector(".event-view-tables-wrap--7IFsJk");
